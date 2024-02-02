@@ -38,17 +38,17 @@ public class RequestFilters {
 
     @ServerRequestFilter
     public Optional<RestResponse<Void>> filterSiteAccess(ContainerRequestContext ctx) {
-        List<String> sessionIds = ctx.getUriInfo().getPathParameters().get("siteId");
+        List<String> siteIds = ctx.getUriInfo().getPathParameters().get("siteId");
         // Abort security check if no sessionId specified or consumer is not a user
-        if (sessionIds == null) {
+        if (siteIds == null) {
             return Optional.empty();
         }
 
-        Site site = Site.findById(sessionIds.getFirst());
-        sessionContext.setSiteMeta(site);
+        Site site = Site.findById(siteIds.getFirst());
+        sessionContext.setSite(site);
 
         // Auth is needed only if site is not public or the request is not a GET request
-        boolean authNeeded = !site.isPublic || !ctx.getMethod().equals("GET");
+        boolean authNeeded = !site.securitySettings.isPublic || !ctx.getMethod().equals("GET");
 
         if (authNeeded && ctx.getSecurityContext().isUserInRole("user") && (site.ownerId != null && site.ownerId.equals(new ObjectId(ctx.getSecurityContext().getUserPrincipal().getName())))) {
             LOG.info("Blocked illegal access to site "+site.id);

@@ -17,11 +17,11 @@ public class RequestContext {
         this.user = user;
     }
 
-    public void setSiteMeta(Site site) {
+    public void setSite(Site site) {
         this.site = site;
     }
 
-    public Site getSiteMeta() {
+    public Site getSite() {
         return site;
     }
 }

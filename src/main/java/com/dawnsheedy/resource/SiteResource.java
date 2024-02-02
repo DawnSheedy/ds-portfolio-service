@@ -3,6 +3,7 @@ package com.dawnsheedy.resource;
 import com.dawnsheedy.bean.RequestContext;
 import com.dawnsheedy.model.site.Site;
 import com.dawnsheedy.model.site.SiteMeta;
+import com.dawnsheedy.model.site.SiteSecuritySettings;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -25,9 +26,36 @@ public class SiteResource {
         return newSite;
     }
 
+    @POST
+    @Path("/{siteId}/security")
+    @Authenticated
+    public SiteSecuritySettings setSecuritySettings(String siteId, SiteSecuritySettings securitySettings) {
+        Site site = this.requestContext.getSite();
+        site.securitySettings = securitySettings;
+        site.update();
+        return site.securitySettings;
+    }
+
+    @GET
+    @Path("/{siteId/security")
+    @Authenticated
+    public SiteSecuritySettings getSecuritySettings(String siteId) {
+        return this.requestContext.getSite().securitySettings;
+    }
+
+    @POST
+    @Path("/{siteId}/meta")
+    @Authenticated
+    public SiteMeta setSiteMeta(String siteId, SiteMeta newMeta) {
+        Site site = this.requestContext.getSite();
+        site.siteMeta = newMeta;
+        site.update();
+        return site.siteMeta;
+    }
+
     @GET
     @Path("/{siteId}/meta")
     public SiteMeta getSiteMeta(String siteId) {
-        return requestContext.getSiteMeta().siteMeta;
+        return requestContext.getSite().siteMeta;
     }
 }
