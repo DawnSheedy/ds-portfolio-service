@@ -37,7 +37,7 @@ public class SiteResource {
     }
 
     @GET
-    @Path("/{siteId/security")
+    @Path("/{siteId}/security")
     @Authenticated
     public SiteSecuritySettings getSecuritySettings(String siteId) {
         return this.requestContext.getSite().securitySettings;
