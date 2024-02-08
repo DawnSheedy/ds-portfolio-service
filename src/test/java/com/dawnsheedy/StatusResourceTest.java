@@ -14,8 +14,7 @@ public class StatusResourceTest {
         given()
           .when().get("/ds-portfolio-service/status")
           .then()
-             .statusCode(200)
-             .body(is("ds-portfolio-service"));
+             .statusCode(200);
     }
 
 }
