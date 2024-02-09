@@ -1,10 +1,7 @@
 package com.dawnsheedy.resource;
 
 import com.dawnsheedy.bean.RequestContext;
-import com.dawnsheedy.model.site.Site;
-import com.dawnsheedy.model.site.SiteMeta;
-import com.dawnsheedy.model.site.SiteSecuritySettings;
-import com.dawnsheedy.model.site.page.Page;
+import com.dawnsheedy.model.site.*;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -69,15 +66,32 @@ public class SiteResource {
     }
 
     @GET
-    @Path("/{siteId}/pages")
-    public List<Page> getSitePages(String siteId) {
-        return requestContext.getSite().pages;
+    @Path("/{siteId}/work-history")
+    public List<WorkHistoryEntry> getSiteWorkHistory(String siteId) {
+        return requestContext.getSite().workHistory;
     }
 
     @POST
-    @Path("/{siteId}/pages")
-    public Page createPage(String siteId, Page newPage) {
-        requestContext.getSite().insertPage(newPage);
-        return newPage;
+    @Authenticated
+    @Path("/{siteId}/work-history")
+    public List<WorkHistoryEntry> createPage(String siteId, List<WorkHistoryEntry> newWorkHistory) {
+        requestContext.getSite().workHistory = newWorkHistory;
+        requestContext.getSite().update();
+        return newWorkHistory;
+    }
+
+    @GET
+    @Path("/{siteId}/sections")
+    public List<SiteSection> getSections(String siteId) {
+        return requestContext.getSite().sections;
+    }
+
+    @POST
+    @Authenticated
+    @Path("/{siteId}/sections")
+    public List<SiteSection> setSections(String siteId, List<SiteSection> newSections) {
+        requestContext.getSite().sections = newSections;
+        requestContext.getSite().update();
+        return requestContext.getSite().sections;
     }
 }

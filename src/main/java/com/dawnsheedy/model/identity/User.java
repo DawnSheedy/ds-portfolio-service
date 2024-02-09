@@ -13,7 +13,9 @@ public class User extends PanacheMongoEntity {
     public String auth0Identifier;
     public Profile profile;
 
-    public User() {}
+    public User() {
+        profile = new Profile();
+    }
 
     public static User findByAuth0Id(String auth0Id) {
         List<User> found = list("auth0Identifier = ?1", auth0Id);

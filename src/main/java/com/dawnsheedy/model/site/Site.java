@@ -1,6 +1,5 @@
 package com.dawnsheedy.model.site;
 
-import com.dawnsheedy.model.site.page.Page;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import io.quarkus.mongodb.panache.common.MongoEntity;
@@ -18,32 +17,16 @@ public class Site extends PanacheMongoEntity {
     public SiteMeta siteMeta;
     public SiteSecuritySettings securitySettings;
     @JsonIgnore
-    public List<Page> pages;
+    public List<WorkHistoryEntry> workHistory;
+    @JsonIgnore
+    public List<SiteSection> sections;
+
 
     public Site() {
         this.siteMeta = new SiteMeta();
         this.securitySettings = new SiteSecuritySettings();
-        this.pages = new ArrayList<>();
-    }
-
-    public void insertPage(Page page) {
-        int foundPageIndex = findPageIndexBySlug(page.slug);
-        if (foundPageIndex < 0) {
-            pages.add(page);
-        } else {
-            pages.set(foundPageIndex, page);
-        }
-        update();
-    }
-
-    private int findPageIndexBySlug(String slug) {
-        for (int i=0; i<pages.size(); i++) {
-            Page searchPage = pages.get(i);
-            if (searchPage.slug.equals(slug)) {
-                return i;
-            }
-        }
-        return -1;
+        this.workHistory = new ArrayList<>();
+        this.sections = new ArrayList<>();
     }
 
     public static Site findById(String sessionId) throws NotFoundException {
