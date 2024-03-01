@@ -5,7 +5,7 @@ on:
 
 jobs:
   build-test-deploy:
-    name: Build, Test and Publish to DO K8s
+    name: Build, Test and Publish to DO K8s (STAGING)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
